@@ -6,7 +6,11 @@ class
     Group = Person-set,
     Grouping = Group-set
     
-  value /* auxilliary functions */ 
+  value /* auxilliary functions */
+    r : Relation = { ("Anna", "Henrik"), ("Anna", "Frederik"), ("Henrik", "Frederik"), 
+        ("Anna", "Mette"),
+        ("Hans", "Mette"), ("Hans", "Joachim"), ("Mette", "Joachim")
+    },
     --isFriendsRelation : Relation -> Bool
     --isFriendsRelation(r) is ...,
 
@@ -14,11 +18,8 @@ class
     --isCorrectGrouping(gs,ps,r) is ...,
       
     areFriends : Person >< Person >< Relation -> Bool
-    areFriends(p1, p2, r) is ((p1, p2) isin r),
-    
-    p1 : Person = "bob",
-    p2 : Person = "alice",
-    r : Relation = {(p1, p2)}
+    areFriends(p1, p2, r) is ((p1, p2) isin r)
+
   test_case
-    [t0] areFriends(p1, p2, r) = true
+    [t0] areFriends("Anna", "Henrik", r) = true
  end
