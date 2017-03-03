@@ -1,0 +1,10 @@
+GroupingBasics
+
+scheme GroupingEx =
+extend GroupingBasics with 
+class
+  value
+   divide : Person-set >< Relation -~-> Grouping
+   divide(ps, r) is ...
+   pre isFriendsRelation(r)
+end
