@@ -11,15 +11,41 @@ class
         ("Anna", "Mette"),
         ("Hans", "Mette"), ("Hans", "Joachim"), ("Mette", "Joachim")
     },
-    --isFriendsRelation : Relation -> Bool
-    --isFriendsRelation(r) is ...,
+    badRelation : Relation = {("friend", ""), ("", "friend"), ("","")},
+    
+    grp1 : Group = {"Hans","Henrik"},
+    grp2 : Group = {"Mette", "Frederik"},
+    grp3 : Group = {"Joachim", "Peter", "Anna"},
+    ging : Grouping = {grp1, grp2, grp3},
+    
 
-    --isCorrectGrouping : Grouping >< Person-set >< Relation -> Bool
-    --isCorrectGrouping(gs,ps,r) is ...,
+    isFriendsRelation : Relation -> Bool
+    isFriendsRelation(r) is ~(exists p : Person >< Person :- p isin r /\ invalidPair(p)),
+    
+    invalidPair : Person >< Person -> Bool
+    invalidPair(p) is
+    let
+        (p1,p2) = p
+    in
+        p1 = <..> \/ p2 = <..>
+    end,
+    
+    isCorrectGrouping : Grouping >< Person-set >< Relation -> Bool
+    isCorrectGrouping(gs,ps,r) is 
+        (all g : Group :- g isin gs => 
+            ~(exists p1 : Person :- p1 isin g /\ 
+                (exists p2 : Person :- p2 isin g /\ 
+                    (areFriends(p1,p2,r))
+                )
+            )
+        ),
       
     areFriends : Person >< Person >< Relation -> Bool
     areFriends(p1, p2, r) is ((p1, p2) isin r)
-
+    
   test_case
-    [t0] areFriends("Anna", "Henrik", r) = true
- end
+    [areFriends] areFriends("Anna", "Henrik", r) = true,
+    [correctGrouping] isCorrectGrouping(ging, {}, r) = true,
+    [t3] isFriendsRelation(badRelation) = false,
+    [t4] isFriendsRelation(r) = true
+end
