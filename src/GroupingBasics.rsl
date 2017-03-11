@@ -20,24 +20,27 @@ class
     
 
     isFriendsRelation : Relation -> Bool
-    isFriendsRelation(r) is ~(exists p : Person >< Person :- p isin r /\ invalidPair(p)),
+    isFriendsRelation(r) is (all p : Person >< Person :- p isin r => validPair(p)),
     
-    invalidPair : Person >< Person -> Bool
-    invalidPair(p) is
+    validPair : Person >< Person -> Bool
+    validPair(p) is
     let
         (p1,p2) = p
     in
-        p1 = <..> \/ p2 = <..>
+        p1 ~= <..> /\ p2 ~= <..>
     end,
     
+    -- is it possible to check for the nof elems in a group (to make sure that all groups have at least 2 ppl?
     isCorrectGrouping : Grouping >< Person-set >< Relation -> Bool
-    isCorrectGrouping(gs,ps,r) is 
-        (all g : Group :- g isin gs => 
-            ~(exists p1 : Person :- p1 isin g /\ 
-                (exists p2 : Person :- p2 isin g /\ 
-                    (areFriends(p1,p2,r))
+    isCorrectGrouping(gs,ps,r) is
+        (all p : Person :- p isin ps =>
+            (exists g : Group :- g isin gs /\
+                (all p1 : Person :- p1 isin g =>
+                    (all p2 : Person :- p2 isin g =>
+                        ~areFriends(p1, p2, r) /\ p isin g
+                    )
                 )
-            )
+            ) 
         ),
       
     areFriends : Person >< Person >< Relation -> Bool
@@ -45,7 +48,7 @@ class
     
   test_case
     [areFriends] areFriends("Anna", "Henrik", r) = true,
-    [correctGrouping] isCorrectGrouping(ging, {}, r) = true,
+    [correctGrouping] isCorrectGrouping(ging, {"Hans","Henrik", "Mette", "Frederik", "Joachim", "Peter", "Anna"}, r) = true,
     [t3] isFriendsRelation(badRelation) = false,
     [t4] isFriendsRelation(r) = true
 end
