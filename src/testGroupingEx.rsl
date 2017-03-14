@@ -3,11 +3,34 @@ GroupingEx
 scheme testGroupingEx =
 extend GroupingEx with 
 class
-  value 
-    ... 
+  value
+    thePersons : Group = {"Anna", "Henrik", "Frederik", "Mette", "Hans", "Joachim"},
+    
+    goodRelation : Relation = {("Anna", "Henrik"), ("Anna", "Frederik"), ("Henrik", "Frederik"), ("Anna", "Mette"), ("Hans", "Mette"), ("Hans", "Joachim"), ("Mette", "Joachim")},
+    
+    badRelation : Relation = {("friend", ""), ("", "friend"), ("","")},
+    
+    grp1 : Group = {"Hans","Henrik"},
+    grp2 : Group = {"Mette", "Frederik"},
+    grp3 : Group = {"Joachim", "Peter", "Anna"},
+    correctGrouping : Grouping = {grp1, grp2, grp3},
+    
+    result : Grouping = {{hd thePersons}}
 
   test_case 
-    ...
-
+    [areFriends] areFriends("Anna", "Henrik", goodRelation) = true,
+    [correctGrouping] isCorrectGrouping(correctGrouping, thePersons, goodRelation) = true,
+    [badRelation] isFriendsRelation(badRelation) = false,
+    [goodRelation] isFriendsRelation(goodRelation) = true,
+    [t1] tail(thePersons),
+    [t3] {{hd tail(thePersons)} union hd result},
+    [t4] tail(tail(thePersons)),
+    [t6] hd({{hd tail(thePersons)} union hd result}),
+    [t7] hd tail(tail(thePersons)),
+    [s] areFriends("Hans", "Joachim", goodRelation),
+    [tt] groupHasFriends({"Joachim", "Hans"}, goodRelation),
+    [ts] shite({{"Joachim", "Hans"}}, "Joachim", goodRelation)
+    --[sda] getGrouping(tail(thePersons), goodRelation, {{hd thePersons}})
+    
  end
  
