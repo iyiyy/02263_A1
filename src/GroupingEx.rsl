@@ -18,13 +18,16 @@ class
           g = findGroups(result, hd ps, r)
         in
           if g = {} then --hasFriendsInGroup(hd ps, hd result, r) then
-            formGrouping(tail(ps), result union {{hd ps}}, r)
+            formGrouping(tail(ps), merge(result, {{hd ps}}), r)
           else
-            formGrouping(tail(ps), {{hd ps} union hd g} union result \ {hd g}, r)
+            formGrouping(tail(ps), merge({{hd ps} union hd g}, result \ {hd g}), r)
           end
         end
       end
     ),
+
+    merge : Grouping >< Grouping -> Grouping
+    merge(g1, g2) is g1 union g2,
     
     findGroups : Grouping >< Person >< Relation -~-> Grouping
     findGroups(gs, p, r) is {g | g : Group :- g isin gs /\ ~hasFriendsInGroup(p, g, r)},
