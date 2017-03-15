@@ -32,5 +32,5 @@ class
         ),
       
     areFriends : Person >< Person >< Relation -> Bool
-    areFriends(p1, p2, r) is ((p1, p2) isin r)
+    areFriends(p1, p2, r) is ((p1, p2) isin r \/ (p2, p1) isin r)
 end
