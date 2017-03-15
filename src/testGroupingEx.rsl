@@ -13,21 +13,31 @@ class
 
     thePersons : Group = {An, He, Fr, Me, Ha, Jo},
 
-    goodRelation : Relation = {(An, He), (An, Fr), (He, Fr), 
+    leftPair : Person >< Person = (An, ""),
+    emptyPair : Person >< Person = ("", ""),
+    rightPair : Person >< Person = ("", An),
+    wfPair : Person >< Person = (An, He),
+
+    wfRelation : Relation = {(An, He), (An, Fr), (He, Fr), 
       (An, Me), (Ha, Me), 
       (Ha, Jo), (Me, Jo)},
 
-    leftPair : Person >< Person = ("An", ""),
-    emptyPair : Person >< Person = ("", ""),
-    rightPair : Person >< Person = ("", An),
+    badRelation : Relation = {emptyPair, (An, He)},
 
-    grp1 : Group = {Ha, He},
-    grp2 : Group = {Me, Fr},
-    grp3 : Group = {Jo, Pe, An},
-    correctGrouping : Grouping = {grp1, grp2, grp3}
+    wfGrouping : Grouping = {{Ha, He}, {Me, Fr}, {Jo, Pe, An}},
+    badGrouping : Grouping = {{An, He}, {Me, Fr}}
 
   test_case
-    [t1] isFriendsRelation(goodRelation) = true
+    [ARE_FRIENDS] areFriends(An, He, wfRelation) = true,
+    [NOT_FRIEDS] areFriends(An, Jo, wfRelation) = false,
+    [WF_PAIR] validPair(wfPair) = true,
+    [EMPTY_PAIR] validPair(emptyPair) = false,
+    [RIGHT_PAIR] validPair(rightPair) = false,
+    [LEFT_PAIR] validPair(leftPair) = false,
+    [WF_RELATION] isFriendsRelation(wfRelation) = true,
+    [BAD_RELATION] isFriendsRelation(badRelation) = false,
+    [MANUAL_WF_GROUPING] isCorrectGrouping(wfGrouping, thePersons, wfRelation) = true,
+    [MANUAL_BAD_GROUPING] isCorrectGrouping(badGrouping, thePersons, wfRelation) = false
 
 end
 
