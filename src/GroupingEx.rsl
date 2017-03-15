@@ -4,7 +4,29 @@ scheme GroupingEx =
 extend GroupingBasics with 
 class
   value
-    findGroups : Grouping >< Person >< Relation -~-> Group-set
+    divide : Person-set >< Relation -~-> Grouping
+    divide(ps, r) is (
+      formGrouping(tail(ps), {{hd ps}}, r))
+      pre isFriendsRelation(r),
+
+    formGrouping : Person-set >< Grouping >< Relation-> Grouping
+    formGrouping(ps, result, r) is (
+      if ps = {} then
+          result
+      else
+        let
+          g = findGroups(result, hd ps, r)
+        in
+          if g = {} then --hasFriendsInGroup(hd ps, hd result, r) then
+            formGrouping(tail(ps), result union {{hd ps}}, r)
+          else
+            formGrouping(tail(ps), {{hd ps} union hd g} union result \ {hd g}, r)
+          end
+        end
+      end
+    ),
+    
+    findGroups : Grouping >< Person >< Relation -~-> Grouping
     findGroups(gs, p, r) is {g | g : Group :- g isin gs /\ ~hasFriendsInGroup(p, g, r)},
 
     hasFriendsInGroup : Person >< Group >< Relation -> Bool

@@ -17,19 +17,35 @@ class
     result : Grouping = {{hd thePersons}}
 
   test_case 
-    [areFriends] areFriends("Anna", "Henrik", goodRelation) = true,
-    [correctGrouping] isCorrectGrouping(correctGrouping, thePersons, goodRelation) = true,
-    [badRelation] isFriendsRelation(badRelation) = false,
-    [goodRelation] isFriendsRelation(goodRelation) = true,
-    [t1] tail(thePersons),
-    [t3] {{hd tail(thePersons)} union hd result},
-    [t4] tail(tail(thePersons)),
-    [t6] hd({{hd tail(thePersons)} union hd result}),
-    [t7] hd tail(tail(thePersons)),
-    [af] areFriends("Hans", "Joachim", goodRelation),
-    [ghs] groupHasFriends({"Joachim", "Hans"}, goodRelation),
-    [fgs] findGroups({{"Joachim", "Hans"}}, "Joachim", goodRelation),
-    [hfig] hasFriendsInGroup("Hans", {"Joachim"}, goodRelation)
+    --[areFriends] areFriends("Anna", "Henrik", goodRelation) = true,
+    --[correctGrouping] isCorrectGrouping(correctGrouping, thePersons, goodRelation) = true,
+    --[badRelation] isFriendsRelation(badRelation) = false,
+    --[goodRelation] isFriendsRelation(goodRelation) = true,
+    --[t1] tail(thePersons),
+    --[t3] {{hd tail(thePersons)} union hd result},
+    --[t4] tail(tail(thePersons)),
+    --[t6] hd({{hd tail(thePersons)} union hd result}),
+    --[t7] hd tail(tail(thePersons)),
+    --[af] areFriends("Hans", "Joachim", goodRelation),
+    --[ghs] hasFriendsInGroup("Hans", {"Anna", "Joachim"}, goodRelation),
+    --[fgs] findGroups({{"Anna", "Joachim"}}, "Hans", goodRelation),
+    --[hfig] hasFriendsInGroup("Hans", {"Joachim"}, goodRelation),
+    --[formgs] divide(thePersons, goodRelation)
+
+    [dvd] divide(thePersons, goodRelation),
+    [ok] isCorrectGrouping(divide(thePersons, goodRelation), thePersons, goodRelation),
+
+    [ps] tail(thePersons),
+    [result] {{hd thePersons}},
+    [r] thePersons,
+    [p] hd tail(thePersons),
+    [g] findGroups({{hd thePersons}}, hd tail(thePersons), goodRelation),
+    [gnotempty] findGroups({{hd thePersons}}, hd tail(thePersons), goodRelation) ~= {},
+    [hdg] hd findGroups({{hd thePersons}}, hd tail(thePersons), goodRelation),
+    [grpunion] {{hd tail(thePersons)} union hd findGroups({{hd thePersons}}, hd tail(thePersons), goodRelation) },
+    [a] {{"Anna", "Joachim"}} union {{"Hans"}},
+    [b]findGroups({{"Anna", "Joachim"},{"Hans"}}, "Henrik", goodRelation),
+    [c] {{"Henrik"} union {"Hans"}} union {{"Anna", "Joachim"},{"Hans"}} \ {{"Hans"}}
     
  end
  
