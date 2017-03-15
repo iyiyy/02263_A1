@@ -1,5 +1,4 @@
 GroupingEx
-
 scheme testGroupingEx =
 extend GroupingEx with 
 class
@@ -27,10 +26,10 @@ class
     [t4] tail(tail(thePersons)),
     [t6] hd({{hd tail(thePersons)} union hd result}),
     [t7] hd tail(tail(thePersons)),
-    [s] areFriends("Hans", "Joachim", goodRelation),
-    [tt] groupHasFriends({"Joachim", "Hans"}, goodRelation),
-    [ts] shite({{"Joachim", "Hans"}}, "Joachim", goodRelation)
-    --[sda] getGrouping(tail(thePersons), goodRelation, {{hd thePersons}})
+    [af] areFriends("Hans", "Joachim", goodRelation),
+    [ghs] groupHasFriends({"Joachim", "Hans"}, goodRelation),
+    [fgs] findGroups({{"Joachim", "Hans"}}, "Joachim", goodRelation),
+    [hfig] hasFriendsInGroup("Hans", {"Joachim"}, goodRelation)
     
  end
  
