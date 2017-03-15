@@ -15,7 +15,7 @@ class
           result
       else
         let
-          g = findGroups(result, hd ps, r)
+          g = findGroups(hd ps, result, r)
         in
           if g = {} then --hasFriendsInGroup(hd ps, hd result, r) then
             formGrouping(tail(ps), merge(result, {{hd ps}}), r)
@@ -29,8 +29,8 @@ class
     merge : Grouping >< Grouping -> Grouping
     merge(g1, g2) is g1 union g2,
     
-    findGroups : Grouping >< Person >< Relation -~-> Grouping
-    findGroups(gs, p, r) is {g | g : Group :- g isin gs /\ ~hasFriendsInGroup(p, g, r)},
+    findGroups : Person >< Grouping >< Relation -~-> Grouping
+    findGroups(p, gs, r) is {g | g : Group :- g isin gs /\ ~hasFriendsInGroup(p, g, r)},
 
     hasFriendsInGroup : Person >< Group >< Relation -> Bool
     hasFriendsInGroup(p, g, r) is

@@ -28,6 +28,7 @@ class
     badGrouping : Grouping = {{An, He}, {Me, Fr}}
 
   test_case
+  -- GroupingBasics tests
     [ARE_FRIENDS] areFriends(An, He, wfRelation) = true,
     [NOT_FRIEDS] areFriends(An, Jo, wfRelation) = false,
     [WF_PAIR] validPair(wfPair) = true,
@@ -37,7 +38,13 @@ class
     [WF_RELATION] isFriendsRelation(wfRelation) = true,
     [BAD_RELATION] isFriendsRelation(badRelation) = false,
     [MANUAL_WF_GROUPING] isCorrectGrouping(wfGrouping, thePersons, wfRelation) = true,
-    [MANUAL_BAD_GROUPING] isCorrectGrouping(badGrouping, thePersons, wfRelation) = false
-
+    [MANUAL_BAD_GROUPING] isCorrectGrouping(badGrouping, thePersons, wfRelation) = false,
+  -- GroupingEx tests
+    [FRIENDS_IN_GROUP] hasFriendsInGroup(An, {He}, wfRelation) = true,
+    [NO_FRIENDS_IN_GROUP] hasFriendsInGroup(An, {Jo}, wfRelation) = false,
+    [FIND_GROUPS] findGroups(An, {{Jo}}, wfRelation) ~= {},
+    [NO_FIND_GROUPS] findGroups(An, {{He}}, wfRelation) = {},
+    [DIVIDE] isCorrectGrouping(divide(thePersons, wfRelation), thePersons, wfRelation) = true
+    
 end
 
